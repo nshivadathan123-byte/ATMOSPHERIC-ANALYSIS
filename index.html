@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Weather Dashboard — A Star Trek-inspired weather interface.">
+    <meta name="darkreader-lock">
+    <meta name="color-scheme" content="dark">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;700&display=swap" rel="stylesheet">
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+
+    <section class="wrap-standard" id="column-3">
+        <!-- ===== FIRST WRAP (TOP ROW - UNIFIED CONTINUOUS) ===== -->
+        <div class="top-bar-unified-continuous">
+            <!-- Left Logo Area (aligns with sidebar width) -->
+            <div class="bar-logo-area">
+                <span class="logo-text">TIME</span>
+                <span class="logo-subtext" id="logo-time"></span>
+            </div>
+
+            <!-- Banner text -->
+            <div class="banner-embedded">
+                WEATHER SYSTEMS &#149; STARDATE <span id="stardate"></span>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls-embedded">
+                <div class="search-group-embedded">
+                    <input type="text" id="city-search" placeholder="ENTER LOCATION..." autocomplete="off">
+                    <button id="search-btn" onclick="searchWeather()">SCAN</button>
+                </div>
+                <div class="unit-group-embedded">
+                    <button id="unit-c" class="unit-btn active" onclick="setUnit('C')">°C</button>
+                    <button id="unit-f" class="unit-btn" onclick="setUnit('F')">°F</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SECOND WRAP (BODY ROW) ===== -->
+        <div class="wrap" id="gap">
+            <!-- Unified Status Bar mirroring the top bar -->
+            <div class="status-bar-unified-continuous">
+                <div class="status-logo-area">
+                    <span class="status-label">STATUS</span>
+                    <span class="status-value" id="sidebar-status">STANDBY</span>
+                </div>
+                <div class="status-banner-embedded">
+                    ATMOSPHERIC SENSOR TELEMETRY &#149; ACTIVE
+                </div>
+            </div>
+
+            <!-- Main Content Grid under the status bar -->
+            <div class="main-body-content">
+                <div class="left-frame">
+                    <div class="panel-4" id="panel-humidity">
+                        <span class="panel-label">HUMIDITY</span>
+                        <span class="panel-value" id="sidebar-humidity">--</span>
+                    </div>
+                    <div class="panel-5" id="panel-wind">
+                        <span class="panel-label">WIND</span>
+                        <span class="panel-value" id="sidebar-wind">--</span>
+                    </div>
+                    <div class="panel-6" id="panel-pressure">
+                        <span class="panel-label">PRESSURE</span>
+                        <span class="panel-value" id="sidebar-pressure">--</span>
+                    </div>
+                    <div class="panel-7" id="panel-clouds">
+                        <span class="panel-label">CLOUDS</span>
+                        <span class="panel-value" id="sidebar-clouds">--</span>
+                    </div>
+                    <div class="panel-8" id="panel-sunrise">
+                        <span class="panel-label">SUNRISE</span>
+                        <span class="panel-value" id="sidebar-sunrise">--</span>
+                    </div>
+                    <div class="panel-9" id="panel-sunset">
+                        <span class="panel-label">SUNSET</span>
+                        <span class="panel-value" id="sidebar-sunset">--</span>
+                    </div>
+                    <button class="panel-10" onclick="resetTelemetry()">RESET<span class="hop">-SCAN</span></button>
+                </div>
+
+                <div class="right-frame">
+
+                    <main class="content-container">
+                        <!-- Welcome State -->
+                        <div class="state-view" id="welcome-state">
+                            <div class="welcome-top">
+                                <h1 class="state-title">ATMOSPHERIC ANALYSIS</h1>
+                                <p class="state-sub">Enter a location to begin sensor scan</p>
+                                <p class="state-hint">SYSTEM READY &#149; ALL SENSORS ONLINE</p>
+                            </div>
+
+                            <div class="welcome-bottom">
+                                <div class="diagnostic-grid">
+                                    <div class="diag-card">
+                                        <div class="diag-header dh-1">RECENT SECTORS (HISTORY)</div>
+                                        <div class="recent-scans-panel">
+                                            <div id="recent-scans-list" class="recent-list">
+                                                <div class="no-recents-text">NO RECENT SCANS RECORDED</div>
+                                            </div>
+                                            <div class="recent-actions">
+                                                <button class="recent-action-btn clear-btn" onclick="clearHistory()"
+                                                    style="width: 100%;">CLEAR HISTORY</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="diag-card">
+                                        <div class="diag-header dh-2">SECTOR PRESETS (QUICK SCAN)</div>
+                                        <div class="preset-links">
+                                            <button class="preset-btn" onclick="quickScan('New York')">NEW YORK</button>
+                                            <button class="preset-btn" onclick="quickScan('London')">LONDON</button>
+                                            <button class="preset-btn" onclick="quickScan('Tokyo')">TOKYO</button>
+                                            <button class="preset-btn" onclick="quickScan('Sydney')">SYDNEY</button>
+                                            <button class="preset-btn" onclick="quickScan('Paris')">PARIS</button>
+                                            <button class="preset-btn" onclick="quickScan('Cairo')">CAIRO</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div class="state-view" id="loading-state" style="display:none;">
+                            <p class="state-sub blink">SCANNING ATMOSPHERIC DATA...</p>
+                        </div>
+
+                        <!-- Error State -->
+                        <div class="state-view" id="error-state" style="display:none;">
+                            <div class="error-icon">⚠</div>
+                            <p class="state-title error-color" id="error-text">LOCATION NOT FOUND</p>
+                            <p class="state-sub">Verify coordinates and retry scan</p>
+                        </div>
+
+                        <!-- Weather Results -->
+                        <div class="weather-results" id="weather-display" style="display:none;">
+                            <!-- Primary Card -->
+                            <div class="primary-card">
+                                <div class="pc-location">
+                                    <div class="pc-city" id="pw-location">--</div>
+                                    <div class="pc-region" id="pw-country">--</div>
+                                    <div class="pc-time-block">
+                                        <span class="pc-time-label">LOCAL TIME</span>
+                                        <span class="pc-time-value" id="pw-localtime">--:--</span>
+                                    </div>
+                                </div>
+                                <div class="pc-weather">
+                                    <span class="pc-emoji" id="pw-icon"></span>
+                                    <span class="pc-desc" id="pw-condition">--</span>
+                                </div>
+                                <div class="pc-temps">
+                                    <div class="pc-temp-main" id="pw-temp">--°</div>
+                                    <div class="pc-temp-feels">
+                                        <span class="pc-fl-label">FEELS LIKE</span>
+                                        <span class="pc-fl-value" id="pw-feels">--°</span>
+                                    </div>
+                                    <div class="pc-temp-range">
+                                        <span class="pc-hi" id="pw-high">H: --°</span>
+                                        <span class="pc-lo" id="pw-low">L: --°</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Detail Cards -->
+                            <div class="detail-row">
+                                <div class="detail-card">
+                                    <div class="dcard-header dch-1">WIND ANALYSIS</div>
+                                    <div class="dcard-body">
+                                        <div class="dcard-big" id="dc-wind-speed">--</div>
+                                        <div class="dcard-label">DIRECTION</div>
+                                        <div class="dcard-value" id="dc-wind-dir">--</div>
+                                    </div>
+                                </div>
+                                <div class="detail-card">
+                                    <div class="dcard-header dch-2">ATMOSPHERE</div>
+                                    <div class="dcard-body">
+                                        <div class="dcard-big" id="dc-humidity">--%</div>
+                                        <div class="dcard-label">PRESSURE</div>
+                                        <div class="dcard-value" id="dc-pressure">-- hPa</div>
+                                    </div>
+                                </div>
+                                <div class="detail-card">
+                                    <div class="dcard-header dch-3">CLOUD COVER</div>
+                                    <div class="dcard-body">
+                                        <div class="dcard-big" id="dc-cloud-val">--%</div>
+                                        <div class="dcard-label">PRECIPITATION</div>
+                                        <div class="dcard-value" id="dc-precip">-- mm</div>
+                                    </div>
+                                </div>
+                                <div class="detail-card">
+                                    <div class="dcard-header dch-4">SOLAR CYCLE</div>
+                                    <div class="dcard-body">
+                                        <div class="dcard-big" id="dc-sunrise-val">--:--</div>
+                                        <div class="dcard-label">SUNSET</div>
+                                        <div class="dcard-value" id="dc-sunset-val">--:--</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Forecast -->
+                            <div class="forecast-block">
+                                <div class="forecast-title-row">
+                                    <span class="ft-bar"></span>
+                                    <span class="ft-text">5-DAY FORECAST PROJECTION</span>
+                                    <span class="ft-bar"></span>
+                                </div>
+                                <div class="forecast-row" id="forecast-grid"></div>
+                            </div>
+                        </div>
+                    </main>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
