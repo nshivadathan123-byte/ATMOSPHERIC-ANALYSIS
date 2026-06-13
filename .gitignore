@@ -1,6 +1,9 @@
 # =============================================
-# OS-generated files
+# Secrets — NEVER commit these!
 # =============================================
+.env.local
+.env
+config.js
 
 # OS-generated files
 .DS_Store

@@ -1,6 +1,6 @@
 // LCARS Weather Dashboard - Using OpenWeatherMap API
-// API key is loaded from config.js (gitignored). Do NOT hardcode it here.
-// If OPENWEATHER_API_KEY is undefined, make sure config.js is present and loaded before app.js.
+// API key lives in Vercel Environment Variables (server-side only).
+// Requests go through /api/weather — the key never reaches the browser.
 
 let currentUnit = 'C';
 let lastLat = null, lastLon = null, lastCity = '';
@@ -103,15 +103,7 @@ function getOpenWeatherIcon(iconName) {
     </svg>`;
 }
 
-function checkApiKey() {
-    if (!OPENWEATHER_API_KEY || OPENWEATHER_API_KEY === "YOUR_API_KEY" || OPENWEATHER_API_KEY.trim() === "") {
-        document.getElementById('error-text').textContent = "API KEY REQUIRED. DEFINE OPENWEATHER_API_KEY IN APP.JS.";
-        showState('error');
-        document.getElementById('sidebar-status').textContent = 'OFFLINE';
-        return false;
-    }
-    return true;
-}
+// No client-side API key check needed — key lives server-side in /api/weather
 
 function updateStardate() {
     const now = new Date();
@@ -141,8 +133,6 @@ function setUnit(unit) {
 
 // Search
 async function searchWeather() {
-    if (!checkApiKey()) return;
-
     const input = document.getElementById('city-search');
     const city = input.value.trim();
     if (!city) return;
@@ -164,32 +154,33 @@ function showState(state) {
     if (map[state]) document.getElementById(map[state]).style.display = 'flex';
 }
 
-// Fetch weather from OpenWeatherMap
+// Fetch weather via our secure /api/weather proxy (API key never reaches browser)
 async function fetchWeatherOpenWeather(query, isCoords = false, lat = null, lon = null) {
     try {
         const units = currentUnit === 'C' ? 'metric' : 'imperial';
         const unitSym = currentUnit === 'C' ? '°C' : '°F';
         const speedLabel = currentUnit === 'C' ? 'km/h' : 'mph';
 
+        // Build proxy URLs — no API key here, it stays on the server
         let weatherUrl, forecastUrl;
         if (isCoords) {
-            weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OPENWEATHER_API_KEY}&units=${units}`;
-            forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${OPENWEATHER_API_KEY}&units=${units}`;
+            weatherUrl = `/api/weather?type=current&lat=${lat}&lon=${lon}&units=${units}`;
+            forecastUrl = `/api/weather?type=forecast&lat=${lat}&lon=${lon}&units=${units}`;
         } else {
-            weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(query)}&appid=${OPENWEATHER_API_KEY}&units=${units}`;
-            forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(query)}&appid=${OPENWEATHER_API_KEY}&units=${units}`;
+            weatherUrl = `/api/weather?type=current&q=${encodeURIComponent(query)}&units=${units}`;
+            forecastUrl = `/api/weather?type=forecast&q=${encodeURIComponent(query)}&units=${units}`;
         }
 
-        // Fetch current weather
+        // Fetch current weather through proxy
         const weatherRes = await fetch(weatherUrl);
         if (!weatherRes.ok) {
-            if (weatherRes.status === 401) throw new Error('Invalid API Key');
+            if (weatherRes.status === 401) throw new Error('API key error — check Vercel env vars');
             if (weatherRes.status === 404) throw new Error('Location not found');
             throw new Error('Weather data unavailable');
         }
         const current = await weatherRes.json();
 
-        // Fetch forecast
+        // Fetch forecast through proxy
         const forecastRes = await fetch(forecastUrl);
         if (!forecastRes.ok) throw new Error('Forecast unavailable');
         const forecast = await forecastRes.json();
@@ -203,7 +194,7 @@ async function fetchWeatherOpenWeather(query, isCoords = false, lat = null, lon 
 
         saveToHistory(current.name);
 
-        // Save history for unit toggle
+        // Save coords for unit toggle refresh
         lastLat = current.coord.lat;
         lastLon = current.coord.lon;
         lastCity = current.name;
