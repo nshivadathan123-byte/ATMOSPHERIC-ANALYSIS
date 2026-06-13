@@ -1,6 +1,11 @@
 // LCARS Weather Dashboard - Using OpenWeatherMap API
+<<<<<<< HEAD
 // API key is loaded from config.js (gitignored). Do NOT hardcode it here.
 // If OPENWEATHER_API_KEY is undefined, make sure config.js is present and loaded before app.js.
+=======
+// Please register at https://openweathermap.org/ to obtain an API key.
+const OPENWEATHER_API_KEY = "5379ae1cf916c11400496fa9d6055c8a";
+>>>>>>> 21ed5205493f9439a1b779fb5a2cba50e04c45a1
 
 let currentUnit = 'C';
 let lastLat = null, lastLon = null, lastCity = '';
@@ -134,8 +139,13 @@ function setUnit(unit) {
     currentUnit = unit;
     document.getElementById('unit-c').classList.toggle('active', unit === 'C');
     document.getElementById('unit-f').classList.toggle('active', unit === 'F');
+<<<<<<< HEAD
     if (lastCity) {
         fetchWeatherOpenWeather(lastCity, false);
+=======
+    if (lastLat !== null && lastLon !== null) {
+        fetchWeatherOpenWeather("", true, lastLat, lastLon);
+>>>>>>> 21ed5205493f9439a1b779fb5a2cba50e04c45a1
     }
 }
 
