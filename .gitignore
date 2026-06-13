@@ -1,7 +1,6 @@
 # =============================================
-# API Keys & Secrets — never commit these!
+# OS-generated files
 # =============================================
-config.js
 
 # OS-generated files
 .DS_Store
