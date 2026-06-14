@@ -142,11 +142,7 @@ body {
 .status-logo-area .status-value {
     font-size: 0.8rem;
     /* Matches .bar-logo-area .logo-subtext */
-<<<<<<< HEAD
     opacity: 1;
-=======
-    opacity: 0.85;
->>>>>>> 21ed5205493f9439a1b779fb5a2cba50e04c45a1
     text-transform: uppercase;
 }
 
@@ -188,20 +184,12 @@ body {
 .panel-2 {
     font-size: 0.95rem;
     font-weight: 700;
-<<<<<<< HEAD
     opacity: 1;
-=======
-    opacity: 0.9;
->>>>>>> 21ed5205493f9439a1b779fb5a2cba50e04c45a1
 }
 
 .panel-2 .hop {
     font-size: 0.75rem;
-<<<<<<< HEAD
     opacity: 1;
-=======
-    opacity: 0.75;
->>>>>>> 21ed5205493f9439a1b779fb5a2cba50e04c45a1
     margin-left: 2px;
 }
 
@@ -264,11 +252,7 @@ body {
 .panel-label {
     font-size: 0.65rem;
     letter-spacing: 1px;
-<<<<<<< HEAD
     opacity: 1;
-=======
-    opacity: 0.75;
->>>>>>> 21ed5205493f9439a1b779fb5a2cba50e04c45a1
     line-height: 1;
 }
 
@@ -322,11 +306,7 @@ body {
 
 .panel-10 .hop {
     font-size: 0.7rem;
-<<<<<<< HEAD
     opacity: 1;
-=======
-    opacity: 0.8;
->>>>>>> 21ed5205493f9439a1b779fb5a2cba50e04c45a1
     margin-left: 2px;
 }
 
@@ -378,11 +358,7 @@ body {
 
 .bar-logo-area .logo-subtext {
     font-size: 0.8rem;
-<<<<<<< HEAD
     opacity: 1;
-=======
-    opacity: 0.85;
->>>>>>> 21ed5205493f9439a1b779fb5a2cba50e04c45a1
 }
 
 .banner-embedded {
@@ -426,11 +402,7 @@ body {
 }
 
 .search-group-embedded input::placeholder {
-<<<<<<< HEAD
     color: rgba(255, 153, 102, 1);
-=======
-    color: rgba(255, 153, 102, 0.5);
->>>>>>> 21ed5205493f9439a1b779fb5a2cba50e04c45a1
 }
 
 .search-group-embedded button {
@@ -562,11 +534,7 @@ body {
 }
 
 .search-group input::placeholder {
-<<<<<<< HEAD
     color: #ccc;
-=======
-    color: #444;
->>>>>>> 21ed5205493f9439a1b779fb5a2cba50e04c45a1
 }
 
 .search-group button {
@@ -989,12 +957,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-<<<<<<< HEAD
-
-=======
     background: rgba(136, 153, 255, 0.05);
     border: 1px solid rgba(136, 153, 255, 0.12);
->>>>>>> 21ed5205493f9439a1b779fb5a2cba50e04c45a1
     border-left: 6px solid var(--bluey);
     border-radius: 4px;
     padding: 16px 20px;
@@ -1213,38 +1177,7 @@ body {
 .fc-date-inline {
     font-size: 0.6rem;
     font-weight: 700;
-<<<<<<< HEAD
     opacity: 1;
-}
-
-.forecast-card:nth-child(1) .fc-header {
-    background-color: var(--ice);
-}
-
-.forecast-card:nth-child(2) .fc-header {
-    background-color: var(--sunflower);
-}
-
-.forecast-card:nth-child(3) .fc-header {
-    background-color: var(--african-violet);
-}
-
-.forecast-card:nth-child(4) .fc-header {
-    background-color: var(--orange);
-}
-
-.forecast-card:nth-child(5) .fc-header {
-    background-color: var(--gold);
-}
-
-.forecast-card:nth-child(6) .fc-header {
-    background-color: var(--butterscotch);
-}
-
-.fc-body {
-
-=======
-    opacity: 0.8;
 }
 
 .forecast-card:nth-child(1) .fc-header { background-color: var(--ice); }
@@ -1257,7 +1190,6 @@ body {
 .fc-body {
     background-color: #0b0c10;
     border: 1px solid rgba(255, 255, 255, 0.1);
->>>>>>> 21ed5205493f9439a1b779fb5a2cba50e04c45a1
     border-top: none;
     padding: 8px 12px;
     flex: 1;
@@ -1396,11 +1328,7 @@ body.weather-mist {
         font-size: 0.6rem;
         letter-spacing: 0.5px;
         margin-bottom: 2px;
-<<<<<<< HEAD
         opacity: 1;
-=======
-        opacity: 0.8;
->>>>>>> 21ed5205493f9439a1b779fb5a2cba50e04c45a1
     }
 
     .panel-value {
